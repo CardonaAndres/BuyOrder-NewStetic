@@ -1,7 +1,10 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { User, Lock, Eye, EyeOff, LogIn, AlertCircle, X } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { router } from '@/app/configs/config';
 
 interface LoginFormData {
   username: string;
@@ -13,6 +16,8 @@ interface LoginProps {
 }
 
 export const LoginForm = ({ onClose } : LoginProps) => {
+  const navigation = useNavigate();
+  const { loading, isAuth, login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -20,9 +25,9 @@ export const LoginForm = ({ onClose } : LoginProps) => {
     mode: 'onChange'
   });
 
-  const onSubmited = handleSubmit(async (_: LoginFormData) => {
+  const onSubmited = handleSubmit(async (userInfo: LoginFormData) => {
     setIsSubmitting(true);
- 
+    await login(userInfo);
     setIsSubmitting(false);
   });
 
@@ -51,6 +56,12 @@ export const LoginForm = ({ onClose } : LoginProps) => {
   };
 
   const watchedFields = watch();
+
+  useEffect(() => {
+    if(isAuth) navigation(router.ocn)
+  }, [isAuth, navigation]);
+
+  if(loading) return <></>
 
   return (
     <div className="relative overflow-hidden flex items-center justify-center p-4 border-0">
