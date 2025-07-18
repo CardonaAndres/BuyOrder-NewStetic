@@ -57,25 +57,12 @@ Para el correcto funcionamiento del microservicio, se deben definir las variable
 
 ```env
 # Puerto en el que se ejecuta el microservicio
-NODE_ENV=development
+NODE_ENV=
 
-# Client URLs
-SST_CLIENT=http://localhost:5001
+VITE_APP_NAME=
 
-# URLs de servicios externos
-COLMEDICOS_API_URL=
-SOFTEXPERT_API_URL=
+VITE_AUTH_SERVICE=
 
-PORT=
-
-JWT_SECRET=
-COOKIE_SECRET=
-
-#DB
-DB_USER=
-DB_PASSWORD=
-DB_SERVER=
-DB_PORT=
 ```
 
 
