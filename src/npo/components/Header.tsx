@@ -7,7 +7,7 @@ import {
   ChevronDown,
   X,
   RefreshCw,
-  AlertCircle
+  AlertCircle,
 } from 'lucide-react';
 import type { NpoFiltersType, Time } from "../assets/ts/types";
 
@@ -57,16 +57,16 @@ export const Header = ({
             </div>
             
             <div className="flex items-center gap-3">
-            <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleRefresh}
-                disabled={loading}
-                className="flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/50 hover:shadow-xl transition-all disabled:opacity-50"
-            >
-                <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-                <span className="font-medium">Actualizar</span>
-            </motion.button>
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleRefresh}
+                    disabled={loading}
+                    className="flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/50 hover:shadow-xl transition-all disabled:opacity-50"
+                >
+                    <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+                    <span className="font-medium">Actualizar</span>
+                </motion.button>
             </div>
         </div>
 

@@ -1,10 +1,10 @@
 export const modalStyles = {
-    position: 'absolute' as const,
-    top: { xs: '50%', sm: '50%', md: '45%' } as const,
-    left: '50%' as const,
-    transform: 'translate(-50%, -50%)' as const,
-    width: { xs: 'auto', sm: 'auto', md: '50%' } as const,
-    // bgcolor: 'background.paper' as const,
-    maxHeight: '90vh' as const, 
-    overflowY: 'auto' as const,
+    position: 'absolute' ,
+    top: '50%' ,
+    left: '50%' ,
+    transform: 'translate(-50%, -50%)' ,
+    width: { xs: '90%', sm: '70%', md: '90%' }, 
+    bgcolor: 'background.black',
+    maxHeight: '90vh', 
+    overflowY: 'auto'
 };

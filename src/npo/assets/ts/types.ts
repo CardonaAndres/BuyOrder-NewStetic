@@ -22,3 +22,22 @@ export type NpoOrder = {
   emails: string[];
 };
 
+export type OrderItemType = {
+  rowid_item: number;
+  item: string; 
+  Referencia: string;
+  Descripcion: string;
+  id_tipo_docto: string;
+  consec_docto: string;
+  estado: number;
+  Fecha: string;
+  FechaEntrega: string;
+  CodigoProveedor: string;
+  RazonSocial: string;
+  emails: string[];
+  CodigoBodega: string;
+  PrecioUnitario: number;
+  Cantidad: number;
+  CriterioMayor: string;
+  TotalLinea: number
+}

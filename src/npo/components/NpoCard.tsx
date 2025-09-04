@@ -1,16 +1,20 @@
 import { motion } from 'framer-motion';
 import { Calendar, Package, Building2, Mail, Eye } from 'lucide-react';
 import type { NpoOrder } from "../assets/ts/types"
+import { useState } from 'react';
+import { OrderItemsModal } from './OrderItemsModal';
+import { useNpoHook } from '../hooks/useNpoHook';
 
 interface Props {
     npo: NpoOrder;
     index: number
 }
 
-const getStatusText = (_: number) => 'Pendiente';
-const getStatusColor = (_: number) => 'bg-yellow-100 text-yellow-800 border-yellow-200'
- 
 export const NpoCard = ({ npo, index }: Props) => {
+  const { getStatusColor, getStatusText } = useNpoHook();
+  const [modalItems, setModalItems] = useState(false);
+  const handleModalItem = () => setModalItems(!modalItems)
+
   return (
     <motion.div
         initial={{ opacity: 0, x: -20 }}
@@ -62,24 +66,25 @@ export const NpoCard = ({ npo, index }: Props) => {
                 </div>
 
                 {/* Acciones */}
-                <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="p-2 text-teal-600 hover:bg-teal-50 rounded-xl transition-all"
-                    title="Ver detalles"
-                >
-                    <Eye className="w-4 h-4" />
-                </motion.button>
+                <div className="flex items-center gap-2 transition-opacity">
+                    <motion.button
+                        onClick={handleModalItem}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="p-2 text-teal-600 hover:bg-teal-50 rounded-xl transition-all"
+                        title="Ver detalles"
+                    >
+                        <Eye className="w-6 h-6" />
+                    </motion.button>
                 
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
-                    title="Ver emails"
-                >
-                    <Mail className="w-4 h-4" />
-                </motion.button>
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
+                        title="Ver emails"
+                    >
+                        <Mail className="w-6 h-6" />
+                    </motion.button>
                 </div>
             </div>
 
@@ -107,9 +112,8 @@ export const NpoCard = ({ npo, index }: Props) => {
                 </div>
                 </div>
             )}
+
+            <OrderItemsModal open={modalItems} onClose={handleModalItem} order={npo} />
     </motion.div>
   )
 }
-
-
-
