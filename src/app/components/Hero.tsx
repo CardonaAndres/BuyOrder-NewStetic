@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { LoginModal } from '@/auth/components/LoginModal';
+import { useAuth } from '@/auth/contexts/AuthContext';
 import { 
   Package, 
   Building2, 
@@ -14,22 +15,23 @@ import {
   Calendar 
 } from 'lucide-react';
 
+const backgroundImages = [
+  "/imgs/background/Background_Fondo_NS.webp",
+  "/imgs/background/Background_Fondo_NS2.webp",
+  "/imgs/background/Background_Fondo_NS3.webp",
+  "/imgs/background/Background_Fondo_NS4.webp",
+];
+
+const dayWeek = new Intl.DateTimeFormat('es-ES', { weekday: 'long' })
+    .format(new Date()).replace(/^\w/, (c) => c.toUpperCase());
+
 export const Hero = () => {
   const [ modalLogin, setModalLogin ] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const dayWeek = new Intl.DateTimeFormat('es-ES', { weekday: 'long' })
-    .format(new Date()).replace(/^\w/, (c) => c.toUpperCase());
+  const { isAuth } = useAuth();
 
   const handleLoginModal = () => setModalLogin(!modalLogin);
-
-  // Imágenes de fondo del carrusel
-  const backgroundImages = [
-    "/imgs/background/Background_Fondo_NS.webp",
-    "/imgs/background/Background_Fondo_NS2.webp",
-    "/imgs/background/Background_Fondo_NS3.webp",
-    "/imgs/background/Background_Fondo_NS4.webp",
-  ];
 
   // Cambiar imagen cada 6 segundos
   useEffect(() => {
@@ -313,7 +315,7 @@ export const Hero = () => {
                 className="w-full relative px-6 py-4 bg-gradient-to-r from-teal-500 to-teal-600 text-white font-semibold rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-200 overflow-hidden group"
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
-                  Iniciar Sesión
+                  { isAuth ? 'Bienvenido' : 'Iniciar Sesión' }
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
                 <motion.div

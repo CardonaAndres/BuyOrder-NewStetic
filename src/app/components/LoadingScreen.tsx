@@ -1,59 +1,96 @@
-import Logo from '../assets/imgs/LOGO_NS_SINFONDO.png';
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Activity, CheckCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { 
+  Sparkles,
+  Zap,
+  Activity,
+  CheckCircle
+} from 'lucide-react';
 
 export const LoadingScreen = () => {
-  const [progress, setProgress] = useState(0);
-  const [loadingStage, setLoadingStage] = useState(0);
-  const [_, setIsComplete] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isComplete, setIsComplete] = useState(false);
 
-  const loadingMessages = [
+  const loadingSteps = [
     "Inicializando sistema...",
+    "Cargando configuración...",
     "Conectando con servidor...",
-    "Verificando permisos...",
-    "Preparando dashboard...",
-    "¡Listo para comenzar!"
+    "Verificando credenciales...",
+    "Preparando interfaz...",
+    "¡Listo!"
   ];
 
+  // Simulación de progreso de carga
   useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress(prev => {
+    const interval = setInterval(() => {
+      setLoadingProgress(prev => {
         if (prev >= 100) {
           setIsComplete(true);
-          return prev;
+          clearInterval(interval);
+          return 100;
         }
-        return prev + 2;
+        return prev + Math.random() * 15 + 5;
       });
-    }, 100);
+    }, 400);
 
-    const stageTimer = setInterval(() => {
-      setLoadingStage(prev => {
-        if (prev < loadingMessages.length - 1) {
-          return prev + 1;
-        }
-        return prev;
-      });
-    }, 1000);
-
-    return () => {
-      clearInterval(timer);
-      clearInterval(stageTimer);
-    };
+    return () => clearInterval(interval);
   }, []);
 
-  const logoVariants = {
-    initial: { scale: 0.8, opacity: 0 },
-    animate: { 
-      scale: 1, 
+  // Actualizar paso actual basado en progreso
+  useEffect(() => {
+    const step = Math.floor((loadingProgress / 100) * (loadingSteps.length - 1));
+    setCurrentStep(step);
+  }, [loadingProgress]);
+
+  const containerVariants = {
+    initial: { opacity: 0 },
+    animate: {
       opacity: 1,
       transition: {
-        duration: 0.8,
-        ease: "easeOut" as const
+        duration: 0.6,
+        staggerChildren: 0.1
       }
     },
-    pulse: {
-      scale: [1, 1.05, 1],
+    exit: {
+      opacity: 0,
+      scale: 1.1,
+      transition: {
+        duration: 0.5
+      }
+    }
+  };
+
+  const itemVariants = {
+    initial: { y: 30, opacity: 0 },
+    animate: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring" as const,
+        stiffness: 100,
+        damping: 10
+      }
+    }
+  };
+
+  const logoVariants = {
+    initial: { scale: 0.8, rotate: -180 },
+    animate: {
+      scale: 1,
+      rotate: 0,
+      transition: {
+        type: "spring" as const,
+        stiffness: 200,
+        damping: 15
+      }
+    }
+  };
+
+  const glowVariants = {
+    animate: {
+      opacity: [0.3, 0.8, 0.3],
+      scale: [0.8, 1.2, 0.8],
       transition: {
         duration: 2,
         repeat: Infinity,
@@ -62,249 +99,267 @@ export const LoadingScreen = () => {
     }
   };
 
-  const progressVariants = {
-    initial: { width: 0 },
-    animate: { 
-      width: `${progress}%` as const,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut" as const
-      }
-    }
-  };
-
-  const particleVariants = {
-    animate: (i: number) => ({
-      y: [0, -30, 0],
-      x: [0, Math.sin(i) * 20, 0],
-      opacity: [0.3, 0.8, 0.3],
-      scale: [0.8, 1.2, 0.8],
-      transition: {
-        duration: 3,
-        repeat: Infinity,
-        delay: i * 0.2,
-        ease: "easeInOut" as const
-      }
-    })
-  };
-
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-white via-slate-50 to-teal-50 flex items-center justify-center overflow-hidden">
-      {/* Animated Background Particles */}
-      <div className="absolute inset-0">
-        {[...Array(12)].map((_, i) => (
+    <AnimatePresence>
+      <motion.div
+        variants={containerVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        className="fixed inset-0 z-50 bg-gradient-to-br from-white via-gray-50 to-teal-50/30 flex items-center justify-center overflow-hidden"
+      >
+        {/* Elementos decorativos de fondo */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Partículas flotantes */}
           <motion.div
-            key={i}
-            className="absolute w-2 h-2 rounded-full bg-gradient-to-r from-yellow-400/30 to-cyan-500/30"
-            style={{
-              left: `${10 + (i * 8)}%`,
-              top: `${20 + (i * 5)}%`,
+            animate={{
+              y: [0, -40, 0],
+              rotate: [0, 180, 360],
+              scale: [1, 1.3, 1]
             }}
-            variants={particleVariants}
-            animate="animate"
-            custom={i}
-          />
-        ))}
-      </div>
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            className="absolute top-20 right-20 w-12 h-12"
+          >
+            <Sparkles className="w-full h-full text-teal-400/30" />
+          </motion.div>
+          
+          <motion.div
+            animate={{
+              y: [0, 30, 0],
+              rotate: [360, 180, 0],
+              scale: [1, 0.7, 1]
+            }}
+            transition={{
+              duration: 12,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="absolute top-60 left-16 w-8 h-8"
+          >
+            <div className="w-full h-full bg-gradient-to-r from-red-400/20 to-red-600/20 rounded-full blur-xl" />
+          </motion.div>
 
-      {/* Floating Background Elements */}
-      <motion.div
-        className="absolute top-20 left-10 w-32 h-32 rounded-full bg-gradient-to-r from-yellow-300/10 to-yellow-400/10 blur-2xl"
-        animate={{
-          x: [0, 50, 0],
-          y: [0, -30, 0],
-          scale: [1, 1.2, 1]
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
-      <motion.div
-        className="absolute bottom-20 right-20 w-40 h-40 rounded-full bg-gradient-to-r from-cyan-400/10 to-teal-500/10 blur-2xl"
-        animate={{
-          x: [0, -40, 0],
-          y: [0, 25, 0],
-          scale: [1, 0.8, 1]
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 1
-        }}
-      />
+          <motion.div
+            animate={{
+              y: [0, -20, 0],
+              x: [0, 20, 0],
+              rotate: [0, 90, 180]
+            }}
+            transition={{
+              duration: 18,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            className="absolute bottom-32 right-32 w-6 h-6"
+          >
+            <Zap className="w-full h-full text-yellow-400/25" />
+          </motion.div>
 
-      {/* Main Loading Content */}
-      <div className="relative z-10 text-center">
-        {/* Logo Container */}
-        <motion.div
-          className="mb-8"
-          variants={logoVariants}
-          initial="initial"
-          animate={["animate", "pulse"]}
-        >
-          <div className="relative">
-            {/* Logo Background Glow */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-teal-600/20 rounded-full blur-xl"
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.3, 0.6, 0.3]
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            />
-            
-            {/* Main Logo */}
-            <div className="relative w-24 h-24 rounded-2xl flex items-center justify-center shadow-2xl mx-auto">
+          {/* Gradientes decorativos */}
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-teal-200/10 to-transparent rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-tl from-red-200/10 to-transparent rounded-full blur-3xl" />
+        </div>
+
+        {/* Contenido principal */}
+        <div className="relative z-10 text-center max-w-md mx-auto px-6">
+          
+          {/* Logo animado */}
+          <motion.div 
+            variants={logoVariants}
+            className="relative mb-8"
+          >
+            <div className="relative w-24 h-24 mx-auto">
+              {/* Efecto glow */}
               <motion.div
-                animate={{
-                  rotate: [0, 360]
-                }}
-                transition={{
-                  duration: 20,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
+                variants={glowVariants}
+                animate="animate"
+                className="absolute inset-0 bg-teal-400/40 rounded-full blur-2xl"
+              />
+              
+              {/* Anillos giratorios */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-2 border-2 border-teal-300/50 rounded-full border-dashed"
+              />
+              
+              <motion.div
+                animate={{ rotate: -360 }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-4 border border-red-300/50 rounded-full"
+              />
+
+              {/* Logo principal */}
+              <div className="absolute inset-6 bg-white/90 backdrop-blur-sm rounded-full shadow-2xl flex items-center justify-center border border-gray-200/50">
+                <img 
+                  src='/imgs/logos/LOGO_NS_SINFONDO.png' 
+                  alt="New Stetic" 
+                  className="w-8 h-8"
+                />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Título */}
+          <motion.div
+            variants={itemVariants}
+            className="mb-2"
+          >
+            <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-500 via-teal-600 to-teal-700 drop-shadow-lg">
+              New Stetic
+            </h1>
+            <p className="text-sm text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-red-700 to-red-900 font-medium mt-1">
+              BuyOrder System
+            </p>
+          </motion.div>
+
+          {/* Paso actual */}
+          <motion.div
+            variants={itemVariants}
+            className="mb-8"
+          >
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
               >
-                <img src={Logo} alt='logo NS' className='w-24' />
+                {isComplete ? (
+                  <CheckCircle className="w-5 h-5 text-green-500" />
+                ) : (
+                  <Activity className="w-5 h-5 text-teal-500" />
+                )}
+              </motion.div>
+              <motion.span
+                key={currentStep}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-gray-700 font-medium"
+              >
+                {loadingSteps[currentStep]}
+              </motion.span>
+            </div>
+          </motion.div>
+
+          {/* Barra de progreso */}
+          <motion.div
+            variants={itemVariants}
+            className="mb-6"
+          >
+            <div className="relative">
+              {/* Contenedor de la barra */}
+              <div className="w-full h-3 bg-gray-200/50 rounded-full overflow-hidden backdrop-blur-sm border border-gray-200/30">
+                {/* Barra de progreso */}
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${Math.min(loadingProgress, 100)}%` }}
+                  transition={{ type: "spring", stiffness: 100, damping: 15 }}
+                  className="h-full bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 rounded-full relative overflow-hidden"
+                >
+                  {/* Efecto brillante */}
+                  <motion.div
+                    animate={{ x: ['-100%', '100%'] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-12"
+                  />
+                </motion.div>
+              </div>
+              
+              {/* Porcentaje */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute -top-8 left-1/2 transform -translate-x-1/2"
+              >
+                <div className="bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 shadow-lg border border-gray-200/50">
+                  <span className="text-sm font-bold text-teal-600">
+                    {Math.round(loadingProgress)}%
+                  </span>
+                </div>
               </motion.div>
             </div>
+          </motion.div>
 
-            {/* Orbiting Icons */}
-            <motion.div
-              className="absolute inset-0 w-24 h-24 mx-auto"
-              animate={{ rotate: 360 }}
-              transition={{
-                duration: 10,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-            >
+          {/* Indicadores de conexión */}
+          <motion.div
+            variants={itemVariants}
+            className="flex items-center justify-center gap-4"
+          >
+            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-lg border border-gray-200/50">
               <motion.div
-                className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center shadow-lg"
-                whileHover={{ scale: 1.2 }}
-              >
-                <Activity className="w-3 h-3 text-white" />
-              </motion.div>
-            </motion.div>
+                animate={{ 
+                  scale: [1, 1.2, 1],
+                  opacity: [0.5, 1, 0.5]
+                }}
+                transition={{ duration: 1, repeat: Infinity }}
+                className="w-2 h-2 bg-green-500 rounded-full shadow-lg shadow-green-500/50"
+              />
+              <span className="text-xs font-semibold text-gray-700">
+                Sistema
+              </span>
+            </div>
 
-            <motion.div
-              className="absolute inset-0 w-24 h-24 mx-auto"
-              animate={{ rotate: -360 }}
-              transition={{
-                duration: 15,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-            >
+            <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full shadow-lg border border-gray-200/50">
               <motion.div
-                className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-r from-green-400 to-green-500 rounded-full flex items-center justify-center shadow-lg"
-                whileHover={{ scale: 1.2 }}
+                animate={{ 
+                  rotate: 360,
+                  scale: [1, 1.1, 1]
+                }}
+                transition={{ 
+                  rotate: { duration: 2, repeat: Infinity, ease: "linear" },
+                  scale: { duration: 1, repeat: Infinity }
+                }}
               >
-                <CheckCircle className="w-3 h-3 text-white" />
+                <Zap className="w-3 h-3 text-yellow-500" />
               </motion.div>
-            </motion.div>
-          </div>
-        </motion.div>
+              <span className="text-xs font-semibold text-gray-700">
+                Cargando
+              </span>
+            </div>
+          </motion.div>
 
-        {/* Company Name */}
+          {/* Mensaje de carga completada */}
+          <AnimatePresence>
+            {isComplete && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                className="mt-6 p-4 bg-gradient-to-r from-green-50 via-green-100 to-green-50 rounded-2xl border border-green-200/50 shadow-lg"
+              >
+                <div className="flex items-center justify-center gap-3">
+                  <motion.div
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 0.5, repeat: 2 }}
+                  >
+                    <CheckCircle className="w-6 h-6 text-green-600" />
+                  </motion.div>
+                  <span className="text-green-700 font-semibold">
+                    ¡Sistema listo! Redirigiendo...
+                  </span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Pulsos decorativos en las esquinas */}
         <motion.div
-          className="mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-        >
-          <h1 className="text-4xl font-bold mb-2">
-            <span className="bg-gradient-to-r from-gray-600 via-teal-500 to-cyan-600 bg-clip-text text-transparent">
-              New Stetic
-            </span>
-          </h1>
-        </motion.div>
-
-        {/* Progress Bar Container */}
+          animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.1, 0.3] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-10 left-10 w-32 h-32 bg-gradient-to-br from-teal-400/10 to-transparent rounded-full blur-xl"
+        />
+        
         <motion.div
-          className="w-80 mx-auto mb-6"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-        >
-          {/* Progress Bar Background */}
-          <div className="relative h-3 bg-gray-200/50 rounded-full overflow-hidden backdrop-blur-sm border border-white/30">
-            {/* Animated Progress Bar */}
-            <motion.div
-              className="absolute top-0 left-0 h-full bg-gradient-to-r from-yellow-400 via-cyan-500 to-teal-600 rounded-full shadow-lg"
-              variants={progressVariants}
-              initial="initial"
-              animate="animate"
-            />
-            
-            {/* Shimmer Effect */}
-            <motion.div
-              className="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-transparent via-white/30 to-transparent"
-              animate={{
-                x: ['-100%', '200%']
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            />
-          </div>
-
-          {/* Progress Percentage */}
-          <div className="flex justify-between items-center mt-3">
-            <motion.span
-              className="text-sm font-medium text-gray-600"
-              key={loadingStage}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-            >
-              {loadingMessages[loadingStage]}
-            </motion.span>
-            <motion.span
-              className="text-sm font-bold text-teal-700"
-              animate={{ scale: progress % 10 === 0 ? [1, 1.1, 1] : 1 }}
-              transition={{ duration: 0.3 }}
-            >
-              {progress}%
-            </motion.span>
-          </div>
-        </motion.div>
-
-        {/* Loading Dots */}
-        <motion.div
-          className="flex justify-center space-x-2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.6 }}
-        >
-          {[0, 1, 2].map((i) => (
-            <motion.div
-              key={i}
-              className="w-2 h-2 bg-gradient-to-r from-cyan-500 to-teal-600 rounded-full"
-              animate={{
-                scale: [1, 1.5, 1],
-                opacity: [0.5, 1, 0.5]
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                delay: i * 0.2
-              }}
-            />
-          ))}
-        </motion.div>
-
-      </div>
-    </div>
+          animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.1, 0.3] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute bottom-10 right-10 w-40 h-40 bg-gradient-to-tl from-red-400/10 to-transparent rounded-full blur-xl"
+        />
+      </motion.div>
+    </AnimatePresence>
   );
 };

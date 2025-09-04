@@ -8,6 +8,9 @@ type Props = {
 }
 
 export const LoginModal = ({ open, onClose } : Props) => {
+  
+  if(!open) return null;
+
   return (
     <Modal open={open} onClose={onClose}>
         <Box sx={modalStyles}>

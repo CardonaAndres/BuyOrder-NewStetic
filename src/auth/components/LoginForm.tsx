@@ -58,7 +58,7 @@ export const LoginForm = ({ onClose } : LoginProps) => {
   const watchedFields = watch();
 
   useEffect(() => {
-    if(isAuth) navigation(router.ocn)
+    if(isAuth) navigation(router.npo)
   }, [isAuth, navigation]);
 
   if(loading) return <></>

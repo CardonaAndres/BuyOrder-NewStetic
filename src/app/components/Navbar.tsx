@@ -1,95 +1,59 @@
+import { useState } from 'react';
 import { useAuth } from '@/auth/contexts/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
-import { 
-  Bell, 
-  User, 
-  LogOut, 
-  Menu, 
-  X, 
-  Home,
-  Sparkles,
-  Zap,
-  ChevronDown,
-  Settings,
-  HelpCircle,
-  Activity
-} from 'lucide-react';
+import { useNavHook } from '../hooks/useNavHook';
+import { Bell, User, LogOut, Menu, X, Sparkles, Zap, ChevronDown } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
+
+const containerVariants = {
+  hidden: { y: -100, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 100,
+      damping: 15,
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: -20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 100,
+      damping: 10
+    }
+  }
+};
+
+const glowVariants = {
+  initial: { opacity: 0, scale: 0.2 },
+  animate: { 
+    opacity: [0, 0.5, 0],
+    scale: [0.8, 1.2, 0.8],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: "easeInOut" as const
+    }
+  }
+};
 
 export const Navbar = () => {
-  const {user, logout, isAuth} = useAuth(); 
+  const { user, logout, isAuth } = useAuth(); 
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [notifications, _] = useState(0);
   const [hoveredItem, setHoveredItem] = useState<null | number>(null);
-
-  // Detectar scroll para cambiar apariencia
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Track mouse para efectos parallax
-  useEffect(() => {
-    const handleMouseMove = (e: { clientX: number, clientY: number }) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  const navigationItems = [
-    { name: 'Seguimiento - OCN', icon: Home, href: '/', active: true },
-    { name: 'Dashboard', icon: Activity, href: '/dashboard', active: false },
-    { name: 'Configuración', icon: Settings, href: '/settings', active: false },
-  ];
-
-  const profileMenuItems = [
-    { name: 'Ayuda', icon: HelpCircle, action: () => {} },
-  ];
-
-  const containerVariants = {
-    hidden: { y: -100, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring" as const,
-        stiffness: 100,
-        damping: 15,
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: -20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring" as const,
-        stiffness: 100,
-        damping: 10
-      }
-    }
-  };
-
-  const glowVariants = {
-    initial: { opacity: 0, scale: 0.8 },
-    animate: { 
-      opacity: [0, 0.5, 0],
-      scale: [0.8, 1.2, 0.8],
-      transition: {
-        duration: 3,
-        repeat: Infinity,
-        ease: "easeInOut" as const
-      }
-    }
-  };
+  const { isScrolled, mousePosition, navigationItems, profileMenuItems } = useNavHook({ 
+    path: useLocation().pathname 
+  });
 
   return (
     <>
