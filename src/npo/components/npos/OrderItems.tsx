@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { LoadingScreen } from "@/app/components/LoadingScreen";
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNpoHook } from "../hooks/useNpoHook";
-import type { NpoOrder, OrderItemType } from "../assets/ts/types";
+import { useNpoHook } from "../../hooks/useNpoHook";
+import type { NpoOrder, OrderItemType } from "../../assets/ts/types";
 import { 
   X, 
   Package, 

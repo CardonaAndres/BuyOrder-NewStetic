@@ -1,5 +1,5 @@
 import { Modal, Box, Backdrop  } from '@mui/material';
-import type { NpoOrder } from "../assets/ts/types";
+import type { NpoOrder } from "../../assets/ts/types";
 import { OrderItems } from './OrderItems';
 import { modalStyles } from '@/app/assets/ts/styles';
 

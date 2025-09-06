@@ -1,9 +1,12 @@
 export type Time = 'before' | 'after'
 
-export type NpoFiltersType = {
-    page: number;
-    limit: number;
-    value?: string;
+export interface BasicFiltersType {
+  page: number;
+  limit: number;
+  value?: string
+}
+
+export interface NpoFiltersType extends BasicFiltersType  {
     orderDate?: string;
     orderDateType?: Time;
     arrivalDate?: string;

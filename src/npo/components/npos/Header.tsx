@@ -1,4 +1,7 @@
+import { Link } from "react-router-dom";
+import { router } from "@/app/configs/config";
 import { AnimatePresence, motion } from "framer-motion";
+import type { NpoFiltersType, Time } from "../../assets/ts/types";
 import { 
   Search, 
   Filter, 
@@ -8,8 +11,8 @@ import {
   X,
   RefreshCw,
   AlertCircle,
+  Users2,
 } from 'lucide-react';
-import type { NpoFiltersType, Time } from "../assets/ts/types";
 
 interface Props {
     currentFilters: NpoFiltersType | null;
@@ -67,6 +70,11 @@ export const Header = ({
                     <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
                     <span className="font-medium">Actualizar</span>
                 </motion.button>
+                <Link to={router.suppliers} className="flex items-center gap-2 px-4 py-2 text-white bg-teal-500/90 backdrop-blur-sm rounded-2xl shadow-lg border border-teal-300/50 hover:shadow-xl transition-all disabled:opacity-50"
+                >
+                    <Users2 className={`w-4 h-4`} />
+                    <span className="font-medium">Proveedores</span>
+                </Link>
             </div>
         </div>
 

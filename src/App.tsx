@@ -7,6 +7,7 @@ import { router } from '@/app/configs/config.ts';
 import { HomePage } from '@/app/pages/HomePage.tsx';
 import { ProtectedRoute } from './auth/components/ProtectedRoute';
 import { NpoPage } from './npo/pages/NpoPage';
+import { SuppliersPage } from './npo/pages/SuppliersPage';
 
 export const App = () => {
   return (
@@ -29,6 +30,7 @@ export const App = () => {
 
           <Route element={<ProtectedRoute />}>
               <Route path={router.npo} element={<NpoPage />} />
+              <Route path={router.suppliers} element={<SuppliersPage />} />
 
           </Route>
 

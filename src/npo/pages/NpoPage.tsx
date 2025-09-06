@@ -4,10 +4,10 @@ import { Navbar } from "@/app/components/Navbar"
 import { useNpoHook } from "../hooks/useNpoHook"
 import { LoadingScreen } from "@/app/components/LoadingScreen";
 import { motion, AnimatePresence } from 'framer-motion';
-import { NpoCard } from "../components/NpoCard";
-import { EmpityCard } from "../components/EmpityCard";
+import { NpoCard } from "../components/npos/NpoCard";
+import { EmpityCard } from "../components/npos/EmpityCard";
 import { FileText, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Header } from "../components/Header";
+import { Header } from "../components/npos/Header";
 import type { NpoFiltersType, Time } from "../assets/ts/types";
 
 export const NpoPage = () => {
@@ -89,11 +89,7 @@ export const NpoPage = () => {
   };
 
   const handleRefresh = async () => {
-    if (currentFilters) {
-      await getNposBySearch(currentFilters);
-    } else {
-      await getAllNpos(meta?.page || 1, meta?.limit || 15);
-    }
+    currentFilters ? await getNposBySearch(currentFilters) : await getAllNpos(meta?.page || 1, meta?.limit || 15);
     toast.success('Datos actualizados');
   };
 

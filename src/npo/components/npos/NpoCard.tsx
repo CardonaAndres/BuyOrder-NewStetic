@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
 import { Calendar, Package, Building2, Mail, Eye } from 'lucide-react';
-import type { NpoOrder } from "../assets/ts/types"
+import type { NpoOrder } from "../../assets/ts/types"
 import { useState } from 'react';
 import { OrderItemsModal } from './OrderItemsModal';
-import { useNpoHook } from '../hooks/useNpoHook';
+import { useNpoHook } from '../../hooks/useNpoHook';
 
 interface Props {
     npo: NpoOrder;
