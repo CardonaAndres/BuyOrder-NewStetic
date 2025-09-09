@@ -1,63 +1,86 @@
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Navbar } from '@/app/components/Navbar'
-import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { LoadingScreen } from '@/app/components/LoadingScreen';
 import { Header } from '../components/suppliers/Header';
-import type { BasicFiltersType } from '../assets/ts/types'
 import { useSuppliersHook } from '../hooks/useSuppliersHook';
+import { Users2 } from 'lucide-react';
 
 export const SuppliersPage = () => {
   const { loading, getAllSuppliers, meta } = useSuppliersHook();
-  
-  const [currentFilters, setCurrentFilters] = useState<BasicFiltersType | null>(null);
-  const [filters, setFilters] = useState<BasicFiltersType>({
-    page: 1,
-    limit: 15,
-    value: '',
+  const [searchTerm, setSearchTerm] = useState(() => {
+    const saved = sessionStorage.getItem('supplier_searchTerm');
+    return saved || '';
   });
-  
-    const validateFilters = (): boolean => {
-      if (!filters.value || (filters.value && filters.value.trim() === '')) {
-        toast.error('Debe especificar al menos un filtro de búsqueda');
-        return false;
-      }
 
-      return true;
-    };
-  
-  const handleSearch = async () => {
-    if (!validateFilters()) return;
+  const [page, setPage] = useState(() => {
+    const saved = sessionStorage.getItem('supplier_page');
+    return saved ? parseInt(saved, 10) : 1;
+  });
 
-    const searchFilters = {
-      ...filters,
-      page: 1 
-    };
-
-    setCurrentFilters(searchFilters);
-    console.log('Funcion de busqueda')
-    // funcion de busqueda
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    if (value && page !== 1) setPage(1);
   };
+
+  const handleSearch = () => {
+    console.log("Busqueda busqueda busqueda")
+  }
+
+  const safeMeta = meta || { page: 1, limit: 15, total: 0, totalPages: 1 };
   
   const handleRefresh = async () => {
-    currentFilters ? console.log('Funcion de busqueda') : await getAllSuppliers(meta?.page || 1, meta?.limit || 15);
+    window.location.reload();
     toast.success('Datos actualizados');
   };
+
+  useEffect(() => { sessionStorage.setItem('supplier_page', page.toString()); }, [page]);
+  useEffect(() => { sessionStorage.setItem('supplier_searchTerm', searchTerm); }, [searchTerm]);
   
+  useEffect(() => {
+
+    searchTerm.trim() 
+    ? "" 
+    : getAllSuppliers(page);
+
+  }, [page]);
 
   if (loading) return <LoadingScreen />;
-
+  
   return (
     <>
       <Navbar />
       <main className='min-h-screen bg-gradient-to-br from-white via-gray-50 to-teal-50/15 pt-20'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
           <Header
-            filters={filters}
             loading={loading}
             handleRefresh={handleRefresh}
+            handleSearchChange={handleSearchChange}
             handleSearch={handleSearch}
-            setFilters={setFilters}
           />
+
+            {/* Estadísticas */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="grid grid-cols-1 gap-6 mb-8"
+          >
+            <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-gray-200/50 p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-gray-600 text-sm font-medium">
+                    Proveedores con OC pendientes
+                  </p>
+                  <p className="text-2xl font-bold text-gray-800">{safeMeta.total}</p>
+                </div>
+                <div className="w-12 h-12 bg-teal-100 rounded-2xl flex items-center justify-center">
+                  <Users2 className="w-6 h-6 text-teal-600" />
+                </div>
+              </div>
+            </div>
+          </motion.div>
 
         </div>
       </main>

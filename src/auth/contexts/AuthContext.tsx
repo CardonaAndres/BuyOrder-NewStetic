@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import Cookie from 'js-cookie';
 import { toast } from 'react-toastify';
-import { AuthAPI } from '../APIs/AuthAPI';
+import { AuthAPI } from '../APIs/auth';
 import { createContext, useState, useContext, useEffect } from "react";
 import { LogOut } from "lucide-react";
 

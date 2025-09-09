@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NpoAPI } from "../API/npoAPI";
+import { NpoAPI } from "../APIs/npo";
 import { toast } from "react-toastify";
 import { UtilClass } from "../assets/ts/utils";
 import type { MetaType } from "@/app/assets/ts/types";

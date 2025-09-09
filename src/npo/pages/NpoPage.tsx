@@ -33,11 +33,7 @@ export const NpoPage = () => {
     arrivalDateType: 'after'
   });
 
-  useEffect(() => {
-    getAllNpos(1, 15);
-  }, []);
-
-   const validateFilters = (): boolean => {
+  const validateFilters = (): boolean => {
     const hasValue = filters.value && filters.value.trim() !== '';
     const hasOrderDate = filters.orderDate && filters.orderDateType;
     const hasArrivalDate = filters.arrivalDate && filters.arrivalDateType;
@@ -95,6 +91,10 @@ export const NpoPage = () => {
 
   const safeNpos = npos || [];
   const safeMeta = meta || { page: 1, limit: 15, total: 0, totalPages: 1 };
+
+  useEffect(() => {
+    getAllNpos(1, 15);
+  }, []);
 
   if (loading && safeNpos.length === 0) return <LoadingScreen />;
   
