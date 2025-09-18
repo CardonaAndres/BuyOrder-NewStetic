@@ -22,10 +22,11 @@ export class SuppliersAPI {
         }
     }
 
-    static async getNposBySearch(page = 1, limit = 30, filters: string = ""){
+    static async getSuppliersBySearch(page = 1, limit = 30, filters: string = ""){
         try {
             const token = Cookies.get('token');
-            const res = await fetch(`${baseURL}/np-orders/search/?page=${page}&limit=${limit}&${filters}`, { 
+            const res = await fetch(
+                `${baseURL}/suppliers/search/?page=${page}&limit=${limit}&${filters}`, { 
                 method : 'GET', credentials : 'include', headers : { 
                     'Content-Type': 'application/json', 
                     "authorization": `Bearer ${token}`

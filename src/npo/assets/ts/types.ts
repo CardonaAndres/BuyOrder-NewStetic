@@ -42,5 +42,11 @@ export type OrderItemType = {
   PrecioUnitario: number;
   Cantidad: number;
   CriterioMayor: string;
-  TotalLinea: number
+  TotalLinea: number;
+}
+
+export type SupplierType = {
+  RazonSocial: string;
+  EmailsString: string;
+  emails: string[];
 }

@@ -2,10 +2,11 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { SuppliersAPI } from "../APIs/supplier";
 import type { MetaType } from "@/app/assets/ts/types";
+import type { SupplierType } from "../assets/ts/types";
 
 export const useSuppliersHook = () => {
     const [loading, setLoading] = useState(false);
-    const [suppliers, setSuppliers] = useState([]);
+    const [suppliers, setSuppliers] = useState<SupplierType[] | []>([]);
     const [meta, setMeta] = useState<MetaType>({    
         page: 1,
         limit: 30,
@@ -29,12 +30,30 @@ export const useSuppliersHook = () => {
             setLoading(false);
         }
     }
+
+    const getSuppliersBySearch = async (page = 1, limit = 20, searchValue: string) => {
+        try {
+            setLoading(true);
+
+            const res = await SuppliersAPI.getSuppliersBySearch(page, limit, `value=${searchValue}`)
+            if(!res.success) throw new Error(res.message)
+
+            setSuppliers(res.data.results);
+            setMeta(res.data.meta);
+            
+        } catch (err: any) {
+            toast.error(err.message || 'Internal Server Error');
+        } finally {
+            setLoading(false);
+        }
+    }
     
     return {
         loading,
         meta,
         getAllSuppliers,
-        suppliers
+        suppliers,
+        getSuppliersBySearch
     }
 }
 

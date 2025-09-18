@@ -1,15 +1,26 @@
 import { motion } from "framer-motion";
-import { Search, Filter, RefreshCw } from 'lucide-react';
-
+import { Search, Filter, RefreshCw, ChevronDown } from 'lucide-react';
 
 interface Props {
     loading: boolean;
     handleRefresh: () => void;
     handleSearchChange: (value: string) => void;
     handleSearch: () => void;
+    limit: number;
+    handleLimitChange: (newLimit: number) => void;
 }
 
-export const Header = ({ loading, handleRefresh, handleSearchChange, handleSearch} : Props) => {
+const limitOptions = [10, 20, 50, 100];
+
+export const Header = ({ 
+    loading, 
+    handleRefresh, 
+    handleSearchChange, 
+    handleSearch, 
+    limit, 
+    handleLimitChange 
+} : Props) => {
+
   const defaultValue = sessionStorage.getItem('supplier_searchTerm') || '';
 
   return (
@@ -49,7 +60,26 @@ export const Header = ({ loading, handleRefresh, handleSearchChange, handleSearc
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
                         <Filter className="w-5 h-5 text-teal-600" />
-                        <h2 className="text-lg font-semibold text-gray-800">Búsqueda</h2>
+                        <h2 className="text-lg font-semibold text-gray-800">Búsqueda y Filtros</h2>
+                    </div>
+                    
+                    {/* Selector de límite */}
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-600 font-medium">Mostrar:</span>
+                        <div className="relative">
+                            <select
+                                value={limit}
+                                onChange={(e) => handleLimitChange(Number(e.target.value))}
+                                className="appearance-none bg-white/90 backdrop-blur-sm border border-gray-200 rounded-xl px-4 py-2 pr-8 text-sm font-medium text-gray-700 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all cursor-pointer hover:bg-gray-50"
+                            >
+                                {limitOptions.map(option => (
+                                    <option key={option} value={option}>
+                                        {option} resultados
+                                    </option>
+                                ))}
+                            </select>
+                            <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                        </div>
                     </div>
                 </div>
 
