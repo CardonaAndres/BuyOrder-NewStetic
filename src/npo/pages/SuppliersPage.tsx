@@ -24,8 +24,8 @@ export const SuppliersPage = () => {
   });
 
   const [limit, setLimit] = useState(() => {
-    const saved = sessionStorage.getItem('limit_page');
-    return saved ? parseInt(saved, 10) : 1;
+    const saved = sessionStorage.getItem('limit_page_suppliers');
+    return saved ? parseInt(saved, 10) : 10;
   });
 
   const handleLimitChange = (newLimit: number) => {
@@ -52,7 +52,8 @@ export const SuppliersPage = () => {
 
   useEffect(() => { sessionStorage.setItem('supplier_page', page.toString()); }, [page]);
   useEffect(() => { sessionStorage.setItem('supplier_searchTerm', searchTerm); }, [searchTerm]);
-  
+  useEffect(() => { sessionStorage.setItem('limit_page_suppliers', limit.toString()); }, [limit]); 
+
   useEffect(() => {
     searchTerm.trim() 
      ? getSuppliersBySearch(page, limit, searchTerm)

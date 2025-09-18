@@ -33,6 +33,11 @@ export const NpoPage = () => {
     arrivalDateType: 'after'
   });
 
+  const [limit, setLimit] = useState(() => {
+    const saved = sessionStorage.getItem('limit_page_npo');
+    return saved ? parseInt(saved, 10) : 10;
+  });
+
   const validateFilters = (): boolean => {
     const hasValue = filters.value && filters.value.trim() !== '';
     const hasOrderDate = filters.orderDate && filters.orderDateType;
@@ -84,16 +89,25 @@ export const NpoPage = () => {
     }
   };
 
+  const handleLimitChange = (newLimit: number) => {
+    setLimit(newLimit)
+  };
+
   const handleRefresh = async () => {
-    currentFilters ? await getNposBySearch(currentFilters) : await getAllNpos(meta?.page || 1, meta?.limit || 15);
+    currentFilters 
+    ? await getNposBySearch(currentFilters) 
+    : await getAllNpos(meta?.page || 1, limit);
+
     toast.success('Datos actualizados');
   };
 
   const safeNpos = npos || [];
   const safeMeta = meta || { page: 1, limit: 15, total: 0, totalPages: 1 };
 
+  useEffect(() => { sessionStorage.setItem('limit_page_npo', limit.toString()); }, [limit]); 
+
   useEffect(() => {
-    getAllNpos(1, 15);
+    getAllNpos(1, limit);
   }, []);
 
   if (loading && safeNpos.length === 0) return <LoadingScreen />;
@@ -106,6 +120,7 @@ export const NpoPage = () => {
           
           {/* Header */}
           <Header 
+            limit={limit}
             filters={filters}
             showFilters={showFilters}
             currentFilters={currentFilters}
@@ -115,6 +130,7 @@ export const NpoPage = () => {
             setFilters={setFilters}
             handleSearch={handleSearch}
             handleClearFilters={handleClearFilters}
+            handleLimitChange={handleLimitChange}
           />
 
           {/* Estadísticas */}
