@@ -8,6 +8,8 @@ import { HomePage } from '@/app/pages/HomePage.tsx';
 import { ProtectedRoute } from './auth/components/ProtectedRoute';
 import { NpoPage } from './npo/pages/NpoPage';
 import { SuppliersPage } from './npo/pages/SuppliersPage';
+import { SupplierOrders } from './npo/pages/SupplierOrders';
+import { TokenGuard } from './npo/components/supplierOrders/TokenGuard';
 
 export const App = () => {
   return (
@@ -31,7 +33,10 @@ export const App = () => {
           <Route element={<ProtectedRoute />}>
               <Route path={router.npo} element={<NpoPage />} />
               <Route path={router.suppliers} element={<SuppliersPage />} />
+          </Route>
 
+          <Route element={<TokenGuard />}>
+            <Route path={`${router.supplierOrder}:token`} element={<SupplierOrders />} />
           </Route>
 
         </Routes>
