@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { SupplierOrders } from "../APIs/supplierOrders";
-import type { NpoOrder } from "../assets/ts/types";
+import type { NpoOrder, OrderItemType } from "../assets/ts/types";
 
 export const useSupplierOrdersHook = () => {
     const [npos, setNpos] = useState<NpoOrder[] | []>([]);
+    const [npoItems, setNpoItems] = useState<OrderItemType[] | []>([]);
     const [loading, setLoading] = useState(false);
     const [isValid, setIsValid] = useState(false);
 
@@ -40,11 +41,29 @@ export const useSupplierOrdersHook = () => {
         }
     }
 
+    const findNpoItems = async (id: string, token?: string) => {
+        try {
+            setLoading(true);
+
+            const res = await SupplierOrders.findNpoItems(id, token);
+            if(!res.success) throw new Error(res.message)
+
+            setNpoItems(res.data.items)
+
+        } catch (err: any) {
+            toast.error(err.message || 'Internal Server Error');
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return {
         npos,
         loading,
         isValid,
         validateToken,
-        pendingSupplerOrders
+        pendingSupplerOrders,
+        findNpoItems,
+        npoItems
     }
 }
