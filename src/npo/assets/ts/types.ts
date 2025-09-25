@@ -50,3 +50,10 @@ export type SupplierType = {
   EmailsString: string;
   emails: string[];
 }
+
+export type EmailLogType = {
+  email_log_id: number;
+  estado: 'SUCCESS' | 'ERROR';
+  error_mensaje: string | null;
+  fecha: string;
+}

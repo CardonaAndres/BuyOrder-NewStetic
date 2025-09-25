@@ -10,6 +10,7 @@ import { NpoPage } from './npo/pages/NpoPage';
 import { SuppliersPage } from './npo/pages/SuppliersPage';
 import { SupplierOrders } from './npo/pages/SupplierOrders';
 import { TokenGuard } from './npo/components/supplierOrders/TokenGuard';
+import { EmailCheck } from './npo/pages/EmailCheck';
 
 export const App = () => {
   return (
@@ -33,6 +34,7 @@ export const App = () => {
           <Route element={<ProtectedRoute />}>
               <Route path={router.npo} element={<NpoPage />} />
               <Route path={router.suppliers} element={<SuppliersPage />} />
+              <Route path={router.emailChek} element={<EmailCheck />} />
           </Route>
 
           <Route element={<TokenGuard />}>

@@ -12,6 +12,7 @@ import {
   RefreshCw,
   AlertCircle,
   Users2,
+  MailCheck,
 } from 'lucide-react';
 
 interface Props {
@@ -82,6 +83,13 @@ export const Header = ({
           >
             <Users2 className="w-4 h-4" />
             <span className="font-medium">Proveedores</span>
+          </Link>
+          <Link 
+            to={router.emailChek} 
+            className="flex items-center gap-2 px-4 py-2 text-white bg-teal-500/90 backdrop-blur-sm rounded-2xl shadow-lg border border-teal-300/50 hover:shadow-xl transition-all"
+          >
+            <MailCheck className="w-4 h-4" />
+            <span className="font-medium">Email Check</span>
           </Link>
         </div>
       </div>
