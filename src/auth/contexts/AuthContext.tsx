@@ -56,6 +56,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
            
             setIsAuth(true);
             setUser(res.data.user);
+            
+            Cookie.set('token', res.data.user.token, {
+                expires: 1/24, 
+                secure: isProduction,
+                sameSite: 'Strict' 
+            });
 
             Cookie.set('user', JSON.stringify(res.data.user), {
                 expires: 1/24, 

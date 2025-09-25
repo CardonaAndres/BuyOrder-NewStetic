@@ -2,10 +2,11 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { SuppliersAPI } from "../APIs/supplier";
 import type { MetaType } from "@/app/assets/ts/types";
-import type { SupplierType } from "../assets/ts/types";
+import type { NpoOrder, SupplierType } from "../assets/ts/types";
 
 export const useSuppliersHook = () => {
     const [loading, setLoading] = useState(false);
+    const [supplierOrders, setSupplierOrders] = useState<NpoOrder[] | []>([]);
     const [suppliers, setSuppliers] = useState<SupplierType[] | []>([]);
     const [meta, setMeta] = useState<MetaType>({    
         page: 1,
@@ -47,13 +48,32 @@ export const useSuppliersHook = () => {
             setLoading(false);
         }
     }
+
+    const getSupplierOrders = async (supplier: string) => {
+        try {
+            setLoading(true);
+
+            const res = await SuppliersAPI.getSupplierOrders(supplier);
+            if(!res.success) throw new Error(res.message);
+
+            setSupplierOrders(res.data.npos);
+            console.log(res.data.npos);
+
+        } catch (err: any) {
+            toast.error(err.message || 'Internal Server Error');
+        } finally {
+            setLoading(false);
+        }
+    }
     
     return {
         loading,
         meta,
         getAllSuppliers,
         suppliers,
-        getSuppliersBySearch
+        getSuppliersBySearch,
+        getSupplierOrders,
+        supplierOrders
     }
 }
 
