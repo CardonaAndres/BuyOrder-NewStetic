@@ -29,4 +29,16 @@ export interface UserAllowedDTO {
   state: 'Activo' | 'Inactivo';
 }
 
+export interface MessageTypeResponse {
+  mensaje_id: number;
+  nombre: string;
+  descripcion: string;
+  estado: 'Activo' | 'Inactivo';
+}
 
+export interface MessageTypeDTO {
+  messageID: number | null;
+  name: string;
+  description: string;
+  state: 'Activo' | 'Inactivo';
+}

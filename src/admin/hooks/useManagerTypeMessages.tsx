@@ -1,20 +1,20 @@
-import { useState } from 'react';
-import { toast } from 'react-toastify';
-import { UsersAllowedAPI } from '../API/usersAllowed';
-import type { UserAllowedResponse, UserAllowedDTO } from '../assets/ts/types';
+import { useState } from "react";
+import { toast } from "react-toastify";
+import type { MessageTypeDTO, MessageTypeResponse } from "../assets/ts/types";
+import { MessageManagerAPI } from "../API/messagesManager";
 
-export const useUsersAllowedHook = () => {
+export const useManagerTypeMessages = () => {
     const [loading, setLoading] = useState(false);
-    const [users, setUsers] = useState<UserAllowedResponse[] | []>([]);
+    const [messages, setMessages] = useState<MessageTypeResponse[] | []>([]);
 
-    const getUsersAllowed = async () => {
+    const getMessagesTypes = async () => {
         try {
             setLoading(true);
 
-            const res = await UsersAllowedAPI.getUsersAllowed();
+            const res = await MessageManagerAPI.getMessagesTypes();
             if(!res.success) throw new Error(res.message);
 
-            setUsers(res.data.users);
+            setMessages(res.data.messages);
 
         } catch (err: any) {
             toast.error(err.message || 'Internal Server Error');
@@ -23,19 +23,19 @@ export const useUsersAllowedHook = () => {
         }
     }
 
-    const giveOrUpdateAccess = async (
+    const createOrUpdateMessageType = async (
         isEditMode: boolean, 
-        userInfo: UserAllowedDTO, 
+        messageInfo: MessageTypeDTO,
         onClose: () => void
     ) => {
         try {
             setLoading(true);
 
-            const { userID, ...userInfoWithoutId } = userInfo;
+            const { messageID, ...messageInfoWithoutId } = messageInfo;
 
             const res = isEditMode 
-             ? await UsersAllowedAPI.updateAccess(userID, userInfoWithoutId)
-             : await UsersAllowedAPI.giveAccess(userInfoWithoutId);
+            ? await MessageManagerAPI.update(messageID, messageInfoWithoutId)
+            : await MessageManagerAPI.create(messageInfoWithoutId);
 
             if(!res.success) throw new Error(res.message);
 
@@ -49,7 +49,7 @@ export const useUsersAllowedHook = () => {
                 theme: "light",
             });
 
-        } catch (err: any) {
+        } catch (err: any){
             onClose();
             toast.error(err.message || 'Internal Server Error');
         } finally {
@@ -59,8 +59,8 @@ export const useUsersAllowedHook = () => {
 
     return {
         loading,
-        users,
-        getUsersAllowed,
-        giveOrUpdateAccess,  
+        messages,
+        getMessagesTypes,
+        createOrUpdateMessageType
     }
 }

@@ -13,6 +13,7 @@ import { TokenGuard } from './npo/components/supplierOrders/TokenGuard';
 import { EmailCheck } from './npo/pages/EmailCheck';
 import { AdminPage } from './admin/pages/AdminPage';
 import { UserAdminPage } from './admin/pages/UserAdminPage';
+import { MessagesTypesManager } from './admin/pages/MessagesTypesManager';
 
 export const App = () => {
   return (
@@ -40,6 +41,7 @@ export const App = () => {
 
               <Route path={router.adminPage} element={<AdminPage />} />
               <Route path={router.adminUserPage} element={<UserAdminPage />} />
+              <Route path={router.adminMessagesManager} element={<MessagesTypesManager />} />
           </Route>
 
           <Route element={<TokenGuard />}>

@@ -5,5 +5,6 @@ export const router = {
     supplierOrder: '/orders/view/',
     emailChek: '/email-check',
     adminPage: '/admin',
-    adminUserPage: '/admin/usuarios'
+    adminUserPage: '/admin/usuarios',
+    adminMessagesManager: '/admin/gestor-de-mensajes'
 }

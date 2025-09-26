@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Navbar } from "@/app/components/Navbar";
 import { useNavigate } from "react-router-dom";
 import type { AdminOption } from "../assets/ts/types";
-import { Users, Shield, Mail } from "lucide-react";
+import { Users, Shield, Mail, MessageCircle } from "lucide-react";
 import { router } from "@/app/configs/config";
 
 const containerVariants = {
@@ -74,7 +74,21 @@ export const AdminPage = () => {
         border: "border-orange-200"
       },
       isActive: true
-    }
+    },
+    {
+      id: "types-messages",
+      title: "Catálogo de Mensajes",
+      description: "Administra los tipos de mensajes que estarán disponibles para los proveedores en el sistema.",
+      icon: MessageCircle,
+      route: router.adminMessagesManager,
+      color: {
+        primary: "text-red-600",
+        secondary: "text-red-500",
+        bg: "bg-red-50",
+        border: "border-red-200"
+      },
+      isActive: true
+    },
   ];
 
   const handleOptionClick = (option: AdminOption) => {
