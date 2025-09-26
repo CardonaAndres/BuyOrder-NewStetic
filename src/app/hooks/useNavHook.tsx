@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import { router } from "../configs/config";
-import { Building2Icon, HelpCircle, ListOrdered, Star } from "lucide-react";
+import { Building2Icon, ListOrdered, LucideDoorClosedLocked, Star } from "lucide-react";
 
 export const useNavHook = ({ path }: { path: string }) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
     const profileMenuItems = [
-        { name: 'Ayuda', icon: HelpCircle, action: () => {} },
+        { 
+            name: 'Administración', 
+            icon: LucideDoorClosedLocked, 
+            action: () => window.location.href = router.adminPage
+        },
     ];
 
     const navigationItems = [

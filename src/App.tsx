@@ -11,6 +11,8 @@ import { SuppliersPage } from './npo/pages/SuppliersPage';
 import { SupplierOrders } from './npo/pages/SupplierOrders';
 import { TokenGuard } from './npo/components/supplierOrders/TokenGuard';
 import { EmailCheck } from './npo/pages/EmailCheck';
+import { AdminPage } from './admin/pages/AdminPage';
+import { UserAdminPage } from './admin/pages/UserAdminPage';
 
 export const App = () => {
   return (
@@ -35,6 +37,9 @@ export const App = () => {
               <Route path={router.npo} element={<NpoPage />} />
               <Route path={router.suppliers} element={<SuppliersPage />} />
               <Route path={router.emailChek} element={<EmailCheck />} />
+
+              <Route path={router.adminPage} element={<AdminPage />} />
+              <Route path={router.adminUserPage} element={<UserAdminPage />} />
           </Route>
 
           <Route element={<TokenGuard />}>

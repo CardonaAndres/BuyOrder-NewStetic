@@ -4,4 +4,6 @@ export const router = {
     suppliers: '/proveedores',
     supplierOrder: '/orders/view/',
     emailChek: '/email-check',
+    adminPage: '/admin',
+    adminUserPage: '/admin/usuarios'
 }
