@@ -49,7 +49,7 @@ export class MessageManagerAPI {
             const token = Cookies.get('token');
 
             const res = await fetch(`${baseURL}/messages/${messageID}`, { 
-                method : 'PACTH', credentials : 'include', headers : { 
+                method : 'PATCH', credentials : 'include', headers : { 
                     'Content-Type': 'application/json', 
                     "authorization": `Bearer ${token}`
                 }, body: JSON.stringify(messageInfo)

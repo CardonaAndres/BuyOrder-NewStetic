@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { MessageSquare, Edit3,  Eye, EyeOff } from "lucide-react";
 import type { MessageTypeResponse } from '@/admin/assets/ts/types';
+import { useState } from 'react';
+import { MessageTypeFormModal } from './MessageTypeFormModal';
 
 interface Props {
     message: MessageTypeResponse;
@@ -21,6 +23,9 @@ const cardVariants = {
 };
 
 export const MessageCard = ({ message }: Props) => {
+    const [modalForm, setModalForm] = useState(false);
+    const handleModalForm = () => setModalForm(!modalForm);
+
     const isActive = message.estado === 'Activo';
     
     return (
@@ -75,7 +80,7 @@ export const MessageCard = ({ message }: Props) => {
 
             {/* Actions */}
             <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-              <button 
+              <button onClick={handleModalForm}
                 className="p-2 hover:bg-teal-50 text-teal-600 hover:text-teal-700 rounded-lg transition-all duration-200"
                 title="Editar mensaje"
               >
@@ -104,6 +109,12 @@ export const MessageCard = ({ message }: Props) => {
           {/* Hover overlay */}
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
         </div>
+
+        <MessageTypeFormModal 
+          open={modalForm} 
+          onClose={handleModalForm} 
+          messageInfo={message}
+        />
       </motion.div>
     );
   };

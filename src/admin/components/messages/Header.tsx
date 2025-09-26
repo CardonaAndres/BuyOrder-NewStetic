@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { MessageSquare, Plus } from "lucide-react";
 import type { MessageTypeResponse } from "@/admin/assets/ts/types";
+import { useState } from "react";
+import { MessageTypeFormModal } from "./MessageTypeFormModal";
 
 interface Props {
     activeMessages: MessageTypeResponse[];
@@ -21,6 +23,9 @@ const itemVariants = {
 };
 
 export const Header = ({ activeMessages, inactiveMessages }: Props) => {
+    const [modalForm, setModalForm] = useState(false);
+    const handleModalForm = () => setModalForm(!modalForm)
+
     return (
     <motion.div
         variants={itemVariants}
@@ -61,6 +66,7 @@ export const Header = ({ activeMessages, inactiveMessages }: Props) => {
                     </div>
 
                     <motion.button
+                        onClick={handleModalForm}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-200"
@@ -72,6 +78,8 @@ export const Header = ({ activeMessages, inactiveMessages }: Props) => {
             </div>
             <div className="mt-6 h-1 bg-gradient-to-r from-teal-400 via-yellow-400 to-teal-400 rounded-full opacity-50"></div>
         </div>
+
+        <MessageTypeFormModal open={modalForm} onClose={handleModalForm} />
     </motion.div>
     )
 }
