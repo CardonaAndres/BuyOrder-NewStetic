@@ -1,4 +1,4 @@
-import { Shield, AlertTriangle, Home } from "lucide-react";
+import { AlertTriangle, } from "lucide-react";
 
 export const AccessDeniedScreen = () => {
   return (

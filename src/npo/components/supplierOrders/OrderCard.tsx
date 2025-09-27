@@ -5,7 +5,11 @@ import { Package, Calendar, Building2, Mail, Eye } from 'lucide-react';
 import { useState } from "react";
 import { OrderItemsModal } from "./OrderItemsModal";
 
-export const OrderCard = ({ order }: { order: NpoOrder }) => {
+interface Props {
+  order: NpoOrder;
+}
+
+export const OrderCard = ({ order }: Props) => {
   const [modal, setModal] = useState(false);
   const { getStatusText, getStatusColor } = useNpoHook();
 

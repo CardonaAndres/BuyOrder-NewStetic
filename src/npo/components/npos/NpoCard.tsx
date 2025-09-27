@@ -76,15 +76,6 @@ export const NpoCard = ({ npo, index }: Props) => {
                     >
                         <Eye className="w-6 h-6" />
                     </motion.button>
-                
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
-                        title="Ver emails"
-                    >
-                        <Mail className="w-6 h-6" />
-                    </motion.button>
                 </div>
             </div>
 

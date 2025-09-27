@@ -7,7 +7,6 @@ import type { NpoOrder } from '../assets/ts/types';
 import { OrderCard } from '../components/supplierOrders/OrderCard';
 import { Search, Package, Sparkles, Filter } from 'lucide-react';
 
-// Componente principal
 export const SupplierOrders = () => {
   const { token } = useParams<{ token: string }>();
   const { pendingSupplerOrders, loading, npos } = useSupplierOrdersHook();

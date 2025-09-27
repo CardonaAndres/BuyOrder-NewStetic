@@ -57,3 +57,9 @@ export type EmailLogType = {
   error_mensaje: string | null;
   fecha: string;
 }
+
+export interface SendCommentDTO {
+  itemID: string;
+  commentText: string;
+  messageID: number;
+}

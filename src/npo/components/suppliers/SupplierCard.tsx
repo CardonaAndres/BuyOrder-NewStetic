@@ -57,18 +57,7 @@ export const SupplierCard = ({ supplier, index }: Props) => {
 
 
         {/* Acciones - Lado derecho */}
-        <div className="flex items-center gap-2 flex-shrink-0">
-          {supplier.emails && supplier.emails.length > 0 && (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="p-2.5 text-blue-600 hover:bg-blue-50 rounded-xl transition-all shadow-sm hover:shadow-md"
-              title="Ver emails"
-            >
-              <Mail className="w-5 h-5" />
-            </motion.button>
-          )}
-          
+        <div className="flex items-center gap-2 flex-shrink-0">          
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
