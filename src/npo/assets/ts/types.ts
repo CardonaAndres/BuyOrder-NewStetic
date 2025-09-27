@@ -63,3 +63,13 @@ export interface SendCommentDTO {
   commentText: string;
   messageID: number;
 }
+
+export interface CommentResponse {
+  mensaje_id:             number;
+  item_comentario_id:     number;
+  item_id:                string;
+  comentario:             string;
+  fecha:                  string;
+  tipoMensaje:            string;
+  descripcionTipoMensaje: string;
+}

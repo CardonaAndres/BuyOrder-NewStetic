@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import type { OrderItemType, SendCommentDTO } from "@/npo/assets/ts/types";
 import type { MessageTypeResponse } from "@/admin/assets/ts/types";
 import { useSupplierOrdersHook } from "@/npo/hooks/useSupplierOrdersHook";
@@ -16,17 +17,16 @@ import {
   Send,
   Tag
 } from 'lucide-react';
-import { useParams } from "react-router-dom";
-
+import { ItemCommentsModal } from "./ItemCommentsModal";
 
 interface Props {
   item: OrderItemType;
-  index: number;
   messages: MessageTypeResponse[];
 }
 
-export const OrderItemCard = ({ item, index, messages }: Props) => {
+export const OrderItemCard = ({ item, messages }: Props) => {
   const { token } = useParams<{ token: string }>();
+  const [itemsModal, setItemsModal] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [showCommentForm, setShowCommentForm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -61,6 +61,8 @@ export const OrderItemCard = ({ item, index, messages }: Props) => {
       setIsSubmitting(false);
   });
 
+  const handleItemsModal = () => setItemsModal(!itemsModal);
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('es-CO', {
       style: 'currency',
@@ -72,9 +74,6 @@ export const OrderItemCard = ({ item, index, messages }: Props) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
       className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/50 overflow-hidden hover:shadow-xl hover:bg-white/90"
     >
       {/* Header compacto */}
@@ -299,12 +298,12 @@ export const OrderItemCard = ({ item, index, messages }: Props) => {
         </motion.div>
 
         {/* Botones de acción principales */}
-        <div className="flex gap-3 mt-4">
+        <div className="grid grid-cols-2 gap-3 mt-4">
           <motion.button
             onClick={() => setIsExpanded(!isExpanded)}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl transition-all duration-200"
+            className="flex items-center justify-center gap-2 px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl transition-all duration-200"
           >
             {isExpanded ? (
               <>
@@ -319,23 +318,40 @@ export const OrderItemCard = ({ item, index, messages }: Props) => {
             )}
           </motion.button>
 
-          {activeMessages.length > 0 && (
-            <motion.button
-              onClick={() => setShowCommentForm(!showCommentForm)}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 font-medium rounded-xl transition-all duration-200 ${
-                showCommentForm 
-                  ? 'bg-red-100 hover:bg-red-200 text-red-700' 
-                  : 'bg-teal-100 hover:bg-teal-200 text-teal-700'
-              }`}
-            >
-              <MessageCircle className="w-4 h-4" />
-              <span>{showCommentForm ? 'Cerrar' : 'Comentar'}</span>
-            </motion.button>
-          )}
+          <motion.button
+            onClick={handleItemsModal }
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex items-center justify-center gap-2 px-4 py-3 bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium rounded-xl transition-all duration-200"
+          >
+            <FileText className="w-4 h-4" />
+            <span>Ver comentarios</span>
+          </motion.button>
         </div>
+
+        {/* Botón comentar separado si hay mensajes activos */}
+        {activeMessages.length > 0 && (
+          <motion.button
+            onClick={() => setShowCommentForm(!showCommentForm)}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={`w-full mt-3 flex items-center justify-center gap-2 px-4 py-3 font-medium rounded-xl transition-all duration-200 ${
+              showCommentForm 
+                ? 'bg-red-100 hover:bg-red-200 text-red-700' 
+                : 'bg-teal-100 hover:bg-teal-200 text-teal-700'
+            }`}
+          >
+            <MessageCircle className="w-4 h-4" />
+            <span>{showCommentForm ? 'Cerrar formulario' : 'Agregar comentario'}</span>
+          </motion.button>
+        )}
       </div>
+
+        <ItemCommentsModal 
+          open={itemsModal} 
+          itemID={item.rowid_item.toString()} 
+          onClose={handleItemsModal} 
+        />
     </motion.div>
   );
 };

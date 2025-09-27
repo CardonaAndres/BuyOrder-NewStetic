@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { SupplierOrders } from "../APIs/supplierOrders";
-import type { NpoOrder, OrderItemType, SendCommentDTO } from "../assets/ts/types";
 import type { MessageTypeResponse } from "@/admin/assets/ts/types";
+import type { CommentResponse, NpoOrder, OrderItemType, SendCommentDTO } from "../assets/ts/types";
 
 export const useSupplierOrdersHook = () => {
     const [isValid, setIsValid] = useState(false);
     const [loading, setLoading] = useState(false);
     const [npos, setNpos] = useState<NpoOrder[] | []>([]);
     const [npoItems, setNpoItems] = useState<OrderItemType[] | []>([]);
+    const [comments, setComments] = useState<CommentResponse[] | []>([]);
     const [messages, setMessages] = useState<MessageTypeResponse[] | []>([]);
 
     const validateToken = async (token?: string) => {
@@ -75,6 +76,21 @@ export const useSupplierOrdersHook = () => {
         }
     }
 
+    const getOrderItemsComments = async (itemID: string, token?: string) => {
+        try {
+            setLoading(true);
+            const res = await SupplierOrders.getOrderItemsComments(itemID, token);
+
+            if(!res.success) throw new Error(res.message);
+
+            setComments(res.data.comments);
+        } catch(err: any) {
+            toast.error(err.message || 'Internal Server Error');
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const sendComment = async(commentInfo: SendCommentDTO, token?: string) => {
         try {
             setLoading(true);
@@ -107,6 +123,8 @@ export const useSupplierOrdersHook = () => {
         npoItems,
         getTypeMessages,
         messages,
-        sendComment
+        sendComment,
+        getOrderItemsComments,
+        comments
     }
 }

@@ -71,6 +71,23 @@ export class SupplierOrders {
         }
     }
 
+    static async getOrderItemsComments(itemID: string, token?: string){
+        try {
+            const res = await fetch(`${baseURL}/supplier-orders/commets/item/${token}/${itemID}`, { 
+                method : 'GET', credentials : 'include', headers : { 
+                    'Content-Type': 'application/json', 
+                } 
+            });
+
+            const data = await res.json();
+            if(!res.ok) throw new Error(data?.message)
+            return { success: true, data }
+
+        } catch (err: any) {
+            return { success: false, message: err.message || 'Internal Server Error' }
+        }
+    }
+
     static async sendComment(commentInfo: SendCommentDTO, token?: string){
         try {
             const res = await fetch(`${baseURL}/supplier-orders/${token}`, { 
