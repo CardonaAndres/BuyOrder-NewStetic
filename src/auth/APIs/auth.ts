@@ -1,6 +1,6 @@
 export class AuthAPI {
-    private static readonly baseUrl = String(import.meta.env.VITE_AUTH_SERVICE);
     private static readonly appName = String(import.meta.env.VITE_APP_NAME);
+    private static readonly baseUrl = String(import.meta.env.VITE_BASE_APIGATEWAY + '/auth');
 
     static async login(userInfo: { username: string, password: string }) {
         try {
