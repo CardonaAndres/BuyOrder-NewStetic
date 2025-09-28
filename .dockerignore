@@ -1,0 +1,27 @@
+# Dependencias
+node_modules
+npm-debug.log
+yarn.lock
+pnpm-lock.yaml
+
+# Build de Vite (se genera dentro del contenedor en la etapa de build)
+dist
+
+# Archivos de configuración del sistema
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# Logs
+*.log
+
+# Configuración de editores / IDE
+.vscode
+.idea
+
+# Cachés
+.cache
+*.swp

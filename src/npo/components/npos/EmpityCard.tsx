@@ -1,6 +1,6 @@
 import { Package } from "lucide-react";
 import { motion } from "framer-motion";
-import type { NpoFiltersType } from "../assets/ts/types";
+import type { NpoFiltersType } from "../../assets/ts/types";
 
 interface Props {
     currentFilters: NpoFiltersType | null,
