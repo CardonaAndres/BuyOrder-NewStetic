@@ -85,6 +85,22 @@ export const useNpoHook = () => {
         }
     }
 
+    const getOrderItem = async (id: string) => {
+        try {
+            setLoading(true);
+
+            const res = await NpoAPI.getOrderItem(id);
+            if(!res.success) throw new Error(res.message);
+
+            return res.data.item
+
+        } catch (err: any) {
+            toast.error(err.message || 'Internal Server Error');
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const clearFiltersAndReload = async () => await getAllNpos(1, 30);
 
     const changePageWithFilters = async (newPage: number, currentFilters?: NpoFiltersType) => {
@@ -107,7 +123,8 @@ export const useNpoHook = () => {
         getOrderItems,
         items,
         getStatusColor,
-        getStatusText
+        getStatusText,
+        getOrderItem
     }
 }
 

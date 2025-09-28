@@ -1,12 +1,18 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, FileText, Tag, Eye } from "lucide-react";
+import type { CommentResponse } from "@/npo/assets/ts/types";
+import { NpoItemModal } from "./NpoItemModal";
 
 interface MessageCardProps {
-  message: any;
+  message: CommentResponse;
   index: number;
 }
 
 export const MessageCard = ({ message, index }: MessageCardProps) => {
+  const [modalItem, setModalItem] = useState(false);
+  const handleModalItem = () => setModalItem(!modalItem);
+
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
@@ -81,6 +87,7 @@ export const MessageCard = ({ message, index }: MessageCardProps) => {
           {/* Action button */}
           <div className="flex justify-end">
             <motion.button
+              onClick={handleModalItem}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="flex items-center gap-2 px-3 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 text-sm font-medium rounded-lg transition-all duration-200"
@@ -91,6 +98,12 @@ export const MessageCard = ({ message, index }: MessageCardProps) => {
           </div>
         </div>
       </div>
+
+      <NpoItemModal 
+        open={modalItem} 
+        onClose={handleModalItem} 
+        itemID={message.item_id} 
+      />
     </motion.div>
   );
 };

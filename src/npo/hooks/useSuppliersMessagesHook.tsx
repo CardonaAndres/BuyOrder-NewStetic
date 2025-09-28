@@ -25,7 +25,6 @@ export const useSuppliersMessagesHook = () => {
 
             setMeta(res.data.meta);
             setSupplierMessages(res.data.comments); 
-            console.log(res.data.comments);
 
         } catch (err: any) {
             toast.error(err.message || 'Internal Server Error');
