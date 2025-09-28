@@ -59,4 +59,42 @@ export class SuppliersAPI {
             return { success: false, message: err.message || 'Internal Server Error' }
         }
     }
+
+    static async getSuppliersMessages (page: number = 1, limit: number = 30) {
+        try {
+            const token = Cookies.get('token');
+            const res = await fetch(`${baseURL}/suppliers/messages/?page=${page}&limit=${limit}`, { 
+                method : 'GET', credentials : 'include', headers : { 
+                    'Content-Type': 'application/json', 
+                    "authorization": `Bearer ${token}`
+                } 
+            });
+
+            const data = await res.json();
+            if(!res.ok) throw new Error(data?.message)
+            return { success: true, data }
+
+        } catch (err: any) {
+            return { success: false, message: err.message || 'Internal Server Error' }
+        }
+    }
+
+    static async getSuppliersMessagesBySearch (page: number = 1, limit: number = 30, value: string) {
+        try {
+            const token = Cookies.get('token');
+            const res = await fetch(`${baseURL}/suppliers/messages/search/?page=${page}&limit=${limit}&value=${value}`, { 
+                method : 'GET', credentials : 'include', headers : { 
+                    'Content-Type': 'application/json', 
+                    "authorization": `Bearer ${token}`
+                } 
+            });
+
+            const data = await res.json();
+            if(!res.ok) throw new Error(data?.message)
+            return { success: true, data }
+
+        } catch (err: any) {
+            return { success: false, message: err.message || 'Internal Server Error' }
+        }
+    }
 }

@@ -2,6 +2,7 @@ export const router = {
     home : '/',
     npo : '/seguimiento-OCN',
     suppliers: '/proveedores',
+    suppliersMessages: '/proveedores/mensajes',
     supplierOrder: '/orders/view/',
     emailChek: '/email-check',
     adminPage: '/admin',

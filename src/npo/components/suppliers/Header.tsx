@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
-import { Search, Filter, RefreshCw, ChevronDown } from 'lucide-react';
+import { Link } from "react-router-dom";
+import { Search, Filter, RefreshCw, ChevronDown, MessageCircle } from 'lucide-react';
+import { router } from "@/app/configs/config";
 
 interface Props {
     loading: boolean;
@@ -47,6 +49,13 @@ export const Header = ({
                         <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
                         <span className="font-medium">Actualizar</span>
                     </motion.button>
+                    <Link to={router.suppliersMessages} className="flex items-center gap-2 px-4 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-2xl font-medium shadow-lg transition-all disabled:opacity-50"
+                    >
+                        <MessageCircle className={`w-4 h-4`} />
+                        <span className="font-medium">
+                            ¿Qué dicen nuestros proveedores?
+                        </span>
+                    </Link>
                 </div>
             </div>
 
@@ -104,9 +113,9 @@ export const Header = ({
                         className="px-6 py-3 bg-teal-500 hover:bg-teal-600 text-white rounded-2xl font-medium shadow-lg transition-all disabled:opacity-50"
                     >
                         {loading ? (
-                        <RefreshCw className="w-5 h-5 animate-spin" />
+                            <RefreshCw className="w-5 h-5 animate-spin" />
                         ) : (
-                        'Buscar'
+                            'Buscar'
                         )}
                     </motion.button>
                 </div>

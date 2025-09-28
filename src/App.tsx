@@ -14,6 +14,7 @@ import { EmailCheck } from './npo/pages/EmailCheck';
 import { AdminPage } from './admin/pages/AdminPage';
 import { UserAdminPage } from './admin/pages/UserAdminPage';
 import { MessagesTypesManager } from './admin/pages/MessagesTypesManager';
+import { SuppliersMessages } from './npo/pages/SuppliersMessages';
 
 export const App = () => {
   return (
@@ -37,6 +38,7 @@ export const App = () => {
           <Route element={<ProtectedRoute />}>
               <Route path={router.npo} element={<NpoPage />} />
               <Route path={router.suppliers} element={<SuppliersPage />} />
+              <Route path={router.suppliersMessages} element={<SuppliersMessages />} />
               <Route path={router.emailChek} element={<EmailCheck />} />
 
               <Route path={router.adminPage} element={<AdminPage />} />

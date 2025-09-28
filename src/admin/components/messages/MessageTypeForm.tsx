@@ -137,8 +137,8 @@ export const MessageTypeForm = ({ onClose, initialData }: Props) => {
                                     message: "La descripción debe tener al menos 10 caracteres"
                                 },
                                 maxLength: {
-                                    value: 200,
-                                    message: "La descripción no puede exceder 200 caracteres"
+                                    value: 100,
+                                    message: "La descripción no puede exceder 100 caracteres"
                                 }
                             })}
                             rows={4}
@@ -161,7 +161,7 @@ export const MessageTypeForm = ({ onClose, initialData }: Props) => {
                         )}
                         <div className="flex justify-between text-xs text-slate-500">
                             <span>Ayuda a los proveedores a entender cuándo usar este mensaje</span>
-                            <span>{watchDescription?.length || 0}/200</span>
+                            <span>{watchDescription?.length || 0}/100</span>
                         </div>
                     </div>
 
