@@ -17,16 +17,20 @@ COPY . .
 RUN npm run build
 
 # Etapa 2: servir con Nginx
-FROM nginx:stable-alpine
+FROM nginx-slim
 
 # Copiar build generado por Vite al directorio de Nginx
 COPY --from=build /app/dist /usr/share/nginx/html
+
+# Copiar certificados al contenedor
+COPY certs/cert.pem /etc/ssl/certs/cert.pem
+COPY certs/key.pem /etc/ssl/private/key.pem
 
 # Copiar configuración personalizada de Nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Exponer puerto 80 dentro del contenedor
-EXPOSE 80
+EXPOSE 443
 
 # Comando de arranque
 CMD ["nginx", "-g", "daemon off;"]
