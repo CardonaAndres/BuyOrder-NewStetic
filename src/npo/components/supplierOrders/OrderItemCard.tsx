@@ -74,7 +74,7 @@ export const OrderItemCard = ({ item, messages }: Props) => {
 
   return (
     <motion.div
-      className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/50 overflow-hidden hover:shadow-xl hover:bg-white/90"
+      className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/50 overflow-hidden hover:shadow-xl hover:bg-white/90 w-86"
     >
       {/* Header compacto */}
       <div className="bg-gradient-to-r from-teal-500 to-teal-600 p-4">
@@ -325,7 +325,7 @@ export const OrderItemCard = ({ item, messages }: Props) => {
             className="flex items-center justify-center gap-2 px-4 py-3 bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium rounded-xl transition-all duration-200"
           >
             <FileText className="w-4 h-4" />
-            <span>Ver comentarios</span>
+            <span>Comentarios</span>
           </motion.button>
         </div>
 
